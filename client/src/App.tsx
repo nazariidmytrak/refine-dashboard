@@ -27,7 +27,6 @@ import { CredentialResponse } from 'interfaces/google';
 
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import { parseJwt } from 'utils/parse-jwt';
-import { ColorModeContextProvider } from './contexts/color-mode';
 
 import { Layout } from 'components/layout';
 import { Header } from 'components/layout/header';
@@ -69,8 +68,8 @@ function App() {
       //Save user to mongoDB
       if (profileObj) {
         const response = await fetch(
-          /*    'http://localhost:8080/api/v1/users', */
-          'https://refine-dashboard-tto8.onrender.com/api/v1/users',
+          /* 'http://localhost:8080/api/v1/users', */
+          'https://refine-dashboard-jkj7.onrender.com/api/v1/users',
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -103,7 +102,7 @@ function App() {
 
       return {
         success: true,
-        redirectTo: '/',
+        redirectTo: '/home',
       };
     },
     logout: async () => {
@@ -120,7 +119,7 @@ function App() {
 
       return {
         success: true,
-        redirectTo: '/login',
+        redirectTo: '/',
       };
     },
     onError: async (error) => {
@@ -140,7 +139,7 @@ function App() {
         authenticated: false,
         error: new Error('Not authenticated'),
         logout: true,
-        redirectTo: '/login',
+        redirectTo: '/',
       };
     },
     getPermissions: async () => null,
@@ -157,123 +156,121 @@ function App() {
     <BrowserRouter>
       {/* <GitHubBanner /> */}
       <RefineKbarProvider>
-        <ColorModeContextProvider>
-          <CssBaseline />
-          <GlobalStyles styles={{ html: { WebkitFontSmoothing: 'auto' } }} />
-          <RefineSnackbarProvider>
-            <Refine
-              dataProvider={dataProvider(
-                /* 'http://localhost:8080/api/v1' */
-                'https://refine-dashboard-tto8.onrender.com'
-              )}
-              notificationProvider={notificationProvider}
-              routerProvider={routerBindings}
-              authProvider={authProvider}
-              resources={[
-                {
-                  name: 'properties',
-                  list: '/properties',
-                  show: '/properties/show/:id',
-                  create: '/properties/create',
-                  edit: '/properties/edit/:id',
-                  meta: {
-                    icon: <VillaOutlined />,
-                  },
+        <CssBaseline />
+        <GlobalStyles styles={{ html: { WebkitFontSmoothing: 'auto' } }} />
+        <RefineSnackbarProvider>
+          <Refine
+            dataProvider={dataProvider(
+              /* 'http://localhost:8080/api/v1' */
+              'https://refine-dashboard-jkj7.onrender.com/api/v1'
+            )}
+            notificationProvider={notificationProvider}
+            routerProvider={routerBindings}
+            authProvider={authProvider}
+            resources={[
+              {
+                name: 'properties',
+                list: '/properties',
+                show: '/properties/show/:id',
+                create: '/properties/create',
+                edit: '/properties/edit/:id',
+                meta: {
+                  icon: <VillaOutlined />,
                 },
-                {
-                  name: 'agents',
-                  list: '/agents',
-                  show: '/agents/show/:id',
-                  meta: {
-                    icon: <PeopleAltOutlined />,
-                  },
+              },
+              {
+                name: 'agents',
+                list: '/agents',
+                show: '/agents/show/:id',
+                meta: {
+                  icon: <PeopleAltOutlined />,
                 },
-                {
-                  name: 'review',
-                  list: '/review',
-                  meta: {
-                    icon: <StarOutlineRounded />,
-                  },
+              },
+              {
+                name: 'review',
+                list: '/review',
+                meta: {
+                  icon: <StarOutlineRounded />,
                 },
-                {
-                  name: 'message',
-                  list: '/message',
-                  meta: {
-                    icon: <ChatBubbleOutline />,
-                  },
+              },
+              {
+                name: 'message',
+                list: '/message',
+                meta: {
+                  icon: <ChatBubbleOutline />,
                 },
-                {
-                  name: 'my-profile',
-                  list: '/my-profile',
-                  meta: {
-                    label: 'My profile',
-                    icon: <AccountCircleOutlined />,
-                  },
+              },
+              {
+                name: 'my-profile',
+                list: '/my-profile',
+                meta: {
+                  label: 'My profile',
+                  icon: <AccountCircleOutlined />,
                 },
-              ]}
-              options={{
-                syncWithLocation: true,
-                warnWhenUnsavedChanges: true,
-              }}
-            >
-              <Routes>
-                <Route
-                  element={
-                    <Authenticated fallback={<CatchAllNavigate to='/login' />}>
-                      <Layout Header={Header} Sider={Sider} Title={Title}>
-                        <Outlet />
-                      </Layout>
-                    </Authenticated>
-                  }
-                >
-                  <Route index element={<Home />} />
+              },
+            ]}
+            options={{
+              syncWithLocation: true,
+              warnWhenUnsavedChanges: true,
+            }}
+          >
+            <Routes>
+              <Route
+                element={
+                  <Authenticated fallback={<CatchAllNavigate to='/' />}>
+                    <Layout Header={Header} Sider={Sider} Title={Title}>
+                      <Outlet />
+                    </Layout>
+                  </Authenticated>
+                }
+              >
+                <Route path='/home' element={<Home />} />
 
-                  <Route path='/properties'>
-                    <Route index element={<AllProperties />} />
-                    <Route path='create' element={<CreateProperty />} />
-                    <Route path='edit/:id' element={<EditProperty />} />
-                    <Route path='show/:id' element={<PropertyDetails />} />
-                  </Route>
-                  <Route path='/agents'>
-                    <Route index element={<Agent />} />
-                    <Route path='show/:id' element={<AgentProfile />} />
-                  </Route>
-                  <Route path='/review'>
-                    <Route index element={<Home />} />
-                  </Route>
-                  <Route path='/message'>
-                    <Route index element={<Home />} />
-                  </Route>
-                  <Route path='/my-profile'>
-                    <Route index element={<MyProfile />} />
-                  </Route>
+                <Route path='/properties'>
+                  <Route index element={<AllProperties />} />
+                  <Route path='create' element={<CreateProperty />} />
+                  <Route path='edit/:id' element={<EditProperty />} />
+                  <Route path='show/:id' element={<PropertyDetails />} />
                 </Route>
-                <Route
-                  element={
-                    <Authenticated fallback={<Outlet />}>
-                      {<NavigateToResource />}
-                    </Authenticated>
-                  }
-                >
-                  <Route index path='/login' element={<Login />} />
+                <Route path='/agents'>
+                  <Route index element={<Agent />} />
+                  <Route path='show/:id' element={<AgentProfile />} />
                 </Route>
-                <Route
-                  element={
-                    <Authenticated>
-                      <Layout Header={Header} Sider={Sider} Title={Title}>
-                        <Outlet />
-                      </Layout>
-                    </Authenticated>
-                  }
-                >
-                  <Route path='*' element={<ErrorComponent />} />
+                <Route path='/review'>
+                  <Route index element={<Home />} />
                 </Route>
-              </Routes>
-              <RefineKbar />
-              <UnsavedChangesNotifier />
-            </Refine>
-          </RefineSnackbarProvider>
-        </ColorModeContextProvider>
+                <Route path='/message'>
+                  <Route index element={<Home />} />
+                </Route>
+                <Route path='/my-profile'>
+                  <Route index element={<MyProfile />} />
+                </Route>
+              </Route>
+              <Route
+                element={
+                  <Authenticated fallback={<Outlet />}>
+                    {<NavigateToResource />}
+                  </Authenticated>
+                }
+              >
+                <Route index element={<Login />} />
+              </Route>
+              <Route
+                element={
+                  <Authenticated>
+                    <Layout Header={Header} Sider={Sider} Title={Title}>
+                      <Outlet />
+                    </Layout>
+                  </Authenticated>
+                }
+              >
+                <Route path='*' element={<ErrorComponent />} />
+              </Route>
+            </Routes>
+            <RefineKbar />
+            <UnsavedChangesNotifier />
+          </Refine>
+        </RefineSnackbarProvider>
       </RefineKbarProvider>
     </BrowserRouter>
   );

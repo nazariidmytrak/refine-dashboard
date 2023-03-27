@@ -18,7 +18,7 @@ export const Title: React.FC<TitleProps> = ({ collapsed }) => {
 
   return (
     <Button fullWidth variant='text' disableRipple>
-      <ActiveLink to='/'>
+      <ActiveLink to='/home'>
         {collapsed ? (
           <img
             src={logo}

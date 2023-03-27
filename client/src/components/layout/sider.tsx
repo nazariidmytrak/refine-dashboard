@@ -250,7 +250,7 @@ export const Sider: React.FC<RefineLayoutSiderProps> = ({
       >
         <ListItemButton
           component={ActiveLink}
-          to='/'
+          to='/home'
           selected={selectedKey === '/'}
           onClick={() => {
             setOpened(false);

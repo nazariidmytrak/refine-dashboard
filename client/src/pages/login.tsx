@@ -4,9 +4,6 @@ import { CredentialResponse } from '../interfaces/google';
 
 import { yariga } from '../assets';
 
-const googleId =
-  '425447464627-0leepe2rvmbigo0nfujmump16h12oimq.apps.googleusercontent.com';
-
 export const Login: React.FC = () => {
   const { mutate: login } = useLogin<CredentialResponse>();
 
@@ -21,7 +18,7 @@ export const Login: React.FC = () => {
       try {
         window.google.accounts.id.initialize({
           ux_mode: 'popup',
-          client_id: googleId,
+          client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
           callback: async (res: CredentialResponse) => {
             if (res.credential) {
               login(res);
