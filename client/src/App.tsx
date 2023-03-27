@@ -69,8 +69,8 @@ function App() {
       //Save user to mongoDB
       if (profileObj) {
         const response = await fetch(
-          'http://localhost:8080/api/v1/users',
-          /* 'https://refine-dashboard-tto8.onrender.com/api/v1/users' */
+          /*    'http://localhost:8080/api/v1/users', */
+          'https://refine-dashboard-tto8.onrender.com/api/v1/users',
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -163,8 +163,8 @@ function App() {
           <RefineSnackbarProvider>
             <Refine
               dataProvider={dataProvider(
-                'http://localhost:8080/api/v1'
-                /* 'https://refine-dashboard-tto8.onrender.com/api/v1' */
+                /* 'http://localhost:8080/api/v1' */
+                'https://refine-dashboard-tto8.onrender.com'
               )}
               notificationProvider={notificationProvider}
               routerProvider={routerBindings}
